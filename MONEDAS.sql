@@ -1,11 +1,6 @@
-SELECT *
-FROM Moneda;
-
-SELECT *
-FROM CambioMoneda;
 
 
--- 1.SINCRONIZAR SECUENCIAS
+-- 1.Sincronizar Secuencias
 
 SELECT setval(
     pg_get_serial_sequence('moneda', 'id'),
@@ -20,7 +15,7 @@ SELECT setval(
 );
 
 
--- 2. INSERTAR MONEDAS SI NO EXISTEN
+-- 2. Insertar Monedas
 
 INSERT INTO Moneda
     (Sigla, Moneda)
@@ -35,7 +30,7 @@ DO NOTHING;
 
 
 
--- 3. INSERTAR CAMBIOS DIARIOS ÚLTIMOS 2 MESES
+-- 3. Insertar Cambios Diarios
 
 INSERT INTO CambioMoneda
     (IdMoneda, Fecha, Cambio)
@@ -303,13 +298,13 @@ JOIN Moneda M
     ON Datos.Sigla = M.Sigla
 
 -- Validar si el cambio existe.
--- Si existe, actualizar el valor.
+
 ON CONFLICT(IdMoneda, Fecha)
 DO UPDATE SET
     Cambio = EXCLUDED.Cambio;
 
 
--- 4. CONSULTAR RESULTADOS
+-- Resultados
 
 SELECT
     M.Sigla,
